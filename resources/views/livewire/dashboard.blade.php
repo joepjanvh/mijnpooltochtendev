@@ -1,4 +1,4 @@
-<div class="container mx-auto pt-4" x-data="{ enablePolling: false }" >
+<div class="container mx-auto pt-4">
     <div class="bg-white md:rounded-lg shadow p-2 md:p-6">
         <!-- Titel van de pagina -->
         <h1 class="text-2xl font-semibold mb-6">Overzicht van de posten voor editie {{ $edition->year }}</h1>
@@ -7,16 +7,17 @@
         <div class="overflow-x-auto">
 
             <div class="flex justify-end">
-                <button 
-                    @click="enablePolling = !enablePolling" 
-                    class="text-black px-4 py-2 mb-2 rounded-md md:inline-block hidden">
+                <a href="?autorefresh={{ request()->query('autorefresh') == 'true' ? 'false' : 'true'}}" class="text-black px-4 py-2 mb-2 rounded-md md:inline-block hidden">
                     <span>
-                        <i :class="enablePolling ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> Automatisch updaten
+                        <i class="{{ request()->query('autorefresh') == 'true' ? 'fa-regular fa-square-check' : 'fa-regular fa-square'}}"></i> Automatisch updaten
                     </span>
-                </button>   
+                </a>   
             </div> 
 
-            <div class="flex flex-col md:flex-row flex-nowrap":wire:poll.5000ms="enablePolling ? true : false">        
+            <div class="flex flex-col md:flex-row flex-nowrap" 
+                @if(request()->query('autorefresh') == 'true') 
+                wire:poll.5000ms 
+                @endif>        
     
                 @foreach($hikes as $hike)
                 <div class="grow flex flex-col border border-gray-250 bg-gray-100" data-accordion="open">
@@ -35,7 +36,7 @@
                             </h3>
                             <div class="flex-1 text-right">
                             @if(isset($totalDelayPerHike[$hike->hike_letter]) && $totalDelayPerHike[$hike->hike_letter] > 0)
-                                <span class="text-sm font-medium px-2.5 py-0.5 rounded-full bg-red-500 text-white">+ {{ round($totalDelayPerHike[$hike->hike_letter], 2) }}</span>                        
+                                <span class="inline-flex text-sm font-medium px-2.5 py-0.5  h-6 rounded-full bg-red-500 text-white">+ {{ round($totalDelayPerHike[$hike->hike_letter], 2) }}</span>                        
                             @else
                                 <span class="inline-flex items-center justify-center w-6 h-6 text-sm font-semibold text-white bg-green-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
                                 <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
