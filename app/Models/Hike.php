@@ -9,7 +9,7 @@ class Hike extends Model
 {
     use HasFactory;
     //moet onderstaande regel hier staan?
-    protected $fillable = ['edition_id', 'hike_letter'];
+    protected $fillable = ['edition_id', 'hike_letter', 'override_delay'];
 
     public function edition()
 {
