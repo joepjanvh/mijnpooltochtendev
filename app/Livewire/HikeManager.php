@@ -13,6 +13,7 @@ class HikeManager extends Component
     public $hike_letter;
     public $hikes;
     public $permissions = [];
+    public $delays = [];
 
     public function mount($editionId)
     {
@@ -25,6 +26,7 @@ class HikeManager extends Component
                 'manage_groups' => Auth::user()->can("koppel beheer {$hike->hike_letter}"),
                 'manage_posts' => Auth::user()->can("posten beheer {$hike->hike_letter}")
             ];
+            $this->delays[$hike->id] = $hike->override_delay ?? 0;
         }
     }
 
@@ -46,6 +48,19 @@ class HikeManager extends Component
     public function resetInput()
     {
         $this->hike_letter = null;
+    }
+
+    public function saveDelay($hikeId, $value)
+    {
+
+        $hike = Hike::where('id', $hikeId)->first();
+
+        if ($hike) {
+            $hike->update(['override_delay' => (int)$value]);
+            $this->delays[$hikeId] = (int)$value;
+            $hike->refresh();  // Refresh the model instance
+            
+        }
     }
 
     public function render()

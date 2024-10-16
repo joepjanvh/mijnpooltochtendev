@@ -36,7 +36,9 @@
                             </h3>
                             <div class="flex-1 text-right">
                             @if(isset($totalDelayPerHike[$hike->hike_letter]) && $totalDelayPerHike[$hike->hike_letter] > 0)
-                                <span class="inline-flex text-sm font-medium px-2.5 py-0.5  h-6 rounded-full bg-red-500 text-white">+ {{ round($totalDelayPerHike[$hike->hike_letter], 2) }}</span>                        
+                                <span class="inline-flex text-sm font-medium px-2.5 py-0.5  h-6 rounded-full bg-red-500 text-white">+{{ round($totalDelayPerHike[$hike->hike_letter], 2) }}</span>     
+                            @elseif(isset($totalDelayPerHike[$hike->hike_letter]) && $totalDelayPerHike[$hike->hike_letter] < 0)       
+                                <span class="inline-flex text-sm font-medium px-2.5 py-0.5  h-6 rounded-full bg-green-500 text-white">{{ round($totalDelayPerHike[$hike->hike_letter], 2) }}</span>                
                             @else
                                 <span class="inline-flex items-center justify-center w-6 h-6 text-sm font-semibold text-white bg-green-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
                                 <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">

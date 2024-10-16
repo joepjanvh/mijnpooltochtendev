@@ -43,6 +43,10 @@ class Dashboard extends Component
     {
         $totalDelay = 0;
 
+        if (!is_null($hike->override_delay) && $hike->override_delay != 0) {
+            return $hike->override_delay;
+        }
+
         foreach ($hike->posts as $post) {
             // Combineer de datum en geplande starttijd van de post
             $postDate = Carbon::parse($post->date);
